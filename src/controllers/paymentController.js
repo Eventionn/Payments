@@ -12,6 +12,7 @@ const paymentController = {
   async getAllPayments(req, res) {
     try {
       const payments = paymentService.getAllPayments();
+      console.log(payments);
 
       if (payments == null || payments.length === 0) {
         return res.status(404).json({ message: 'No payments found' });

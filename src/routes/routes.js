@@ -1,6 +1,4 @@
 import { Router } from "express";
-import userInEventController from "../controllers/userInEventController.js";
-import feedbackController from "../controllers/feedbackController.js";
 import paymentController from "../controllers/paymentController.js";
 
 const router = Router();
