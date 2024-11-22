@@ -1,0 +1,488 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "UserInEvent API",
+    "version": "1.0.0",
+    "description": "API for managing users in events."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5001/api",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/tickets": {
+      "get": {
+        "summary": "Get all user events",
+        "operationId": "getAllUserInEvents",
+        "tags": ["UserInEvent"],
+        "responses": {
+          "200": {
+            "description": "List of user events",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "ticketID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                    "event_id": "9876543210",
+                    "user_id": "12345",
+                    "feedback_id": null,
+                    "createdAt": "2024-11-18T12:00:00Z",
+                    "participated": true
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error while fetching user events"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user event",
+        "operationId": "createUserInEvent",
+        "tags": ["UserInEvent"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "event_id": "9876543210",
+                "user_id": "12345",
+                "feedback_id": null,
+                "participated": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User event successfully created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ticketID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "event_id": "9876543210",
+                  "user_id": "12345",
+                  "feedback_id": null,
+                  "createdAt": "2024-11-18T12:00:00Z",
+                  "participated": true
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error while creating user event"
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "summary": "Get a user event by ID",
+        "operationId": "getUserInEventById",
+        "tags": ["UserInEvent"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User event found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ticketID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "event_id": "9876543210",
+                  "user_id": "12345",
+                  "feedback_id": null,
+                  "createdAt": "2024-11-18T12:00:00Z",
+                  "participated": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User event not found"
+          },
+          "500": {
+            "description": "Internal error while fetching user event by ID"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a user event by ID",
+        "operationId": "updateUserInEvent",
+        "tags": ["UserInEvent"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "event_id": "9876543210",
+                "user_id": "12345",
+                "feedback_id": null,
+                "participated": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User event updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "ticketID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "event_id": "9876543210",
+                  "user_id": "12345",
+                  "feedback_id": null,
+                  "createdAt": "2024-11-18T12:00:00Z",
+                  "participated": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User event not found"
+          },
+          "500": {
+            "description": "Internal error while updating user event"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user event by ID",
+        "operationId": "deleteUserInEvent",
+        "tags": ["UserInEvent"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User event deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "UserInEvent deleted successfully",
+                  "deletedUserInEvent": {
+                    "ticketID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                    "event_id": "9876543210",
+                    "user_id": "12345",
+                    "feedback_id": null,
+                    "createdAt": "2024-11-18T12:00:00Z",
+                    "participated": true
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User event not found"
+          },
+          "500": {
+            "description": "Internal error while deleting user event"
+          }
+        }
+      }
+    },
+  "/feedbacks": {
+    "get": {
+      "summary": "Get all Feedbacks",
+      "operationId": "getAllFeedbacks",
+      "tags": ["Feedback"],
+      "responses": {
+        "200": {
+          "description": "List of all feedbacks",
+          "content": {
+            "application/json": {
+              "example": [
+                {
+                  "feedbackID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "rating": 5,
+                  "commentary": "Great event!"
+                }
+              ]
+            }
+          }
+        },
+        "500": {
+          "description": "Error fetching feedbacks"
+        }
+      }
+    },
+    "post": {
+      "summary": "Create a new Feedback",
+      "operationId": "createFeedback",
+      "tags": ["Feedback"],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "example": {
+              "rating": 5,
+              "commentary": "Very well organized!"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Feedback created successfully",
+          "content": {
+            "application/json": {
+              "example": {
+                "feedbackID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                "rating": 5,
+                "commentary": "Very well organized!"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid feedback data"
+        },
+        "500": {
+          "description": "Error creating feedback"
+        }
+      }
+    }
+  },
+  "/feedbacks/{id}": {
+    "get": {
+      "summary": "Get a Feedback by ID",
+      "operationId": "getFeedbackById",
+      "tags": ["Feedback"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Feedback retrieved successfully",
+          "content": {
+            "application/json": {
+              "example": {
+                "feedbackID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                "rating": 5,
+                "commentary": "Great event!"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Feedback not found"
+        },
+        "500": {
+          "description": "Error fetching feedback"
+        }
+      }
+    },
+    "put": {
+      "summary": "Update a Feedback",
+      "operationId": "updateFeedback",
+      "tags": ["Feedback"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+          }
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "example": {
+              "rating": 4,
+              "commentary": "Good event!"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Feedback updated successfully",
+          "content": {
+            "application/json": {
+              "example": {
+                "feedbackID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                "rating": 4,
+                "commentary": "Good event!"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Feedback not found"
+        },
+        "500": {
+          "description": "Error updating feedback"
+        }
+      }
+    },
+    "delete": {
+      "summary": "Delete a Feedback",
+      "operationId": "deleteFeedback",
+      "tags": ["Feedback"],
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Feedback deleted successfully",
+          "content": {
+            "application/json": {
+              "example": {
+                "message": "Feedback deleted successfully"
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Feedback not found"
+        },
+        "500": {
+          "description": "Error deleting feedback"
+        }
+      }
+    }
+  },
+  "/feedbacks/event/{eventId}": {
+    "get": {
+      "summary": "Get Feedbacks for a specific Event",
+      "operationId": "getEventFeedbacks",
+      "tags": ["Feedback"],
+      "parameters": [
+        {
+          "name": "eventId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "9876543210"
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "List of feedbacks for the event",
+          "content": {
+            "application/json": {
+              "example": [
+                {
+                  "feedbackID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "rating": 5,
+                  "commentary": "Amazing event!"
+                }
+              ]
+            }
+          }
+        },
+        "500": {
+          "description": "Error fetching feedbacks for the event"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserInEvent": {
+        "type": "object",
+        "properties": {
+          "ticketID": {
+            "type": "string",
+            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+          },
+          "event_id": {
+            "type": "string",
+            "example": "9876543210"
+          },
+          "user_id": {
+            "type": "string",
+            "example": "12345"
+          },
+          "feedback_id": {
+            "type": "string",
+            "example": null
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-18T12:00:00Z"
+          },
+          "participated": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "Feedback": {
+        "type": "object",
+        "properties": {
+          "feedbackID": {
+            "type": "string",
+            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+          },
+          "rating": {
+            "type": "integer",
+            "example": 5
+          },
+          "commentary": {
+            "type": "string",
+            "maxLength": 150,
+            "example": "Very well organized event!"
+          }
+        }
+      }
+    }
+  }
+}
+}

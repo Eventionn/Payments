@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+      - name: userservice
+        image: a23893/userservice:main 
+        ports:
+        - containerPort: 5001
+        env:
+          - name: DB_HOST
+            value: "userservice-db-service"  
+          - name: DB_PORT
+            value: "5432"                  
+          - name: DB_USER
+            value: "userservice_user"      
+          - name: DB_PASSWORD
+            value: "userservice_pass"      
+          - name: DB_NAME
+            value: "userservice_db" 

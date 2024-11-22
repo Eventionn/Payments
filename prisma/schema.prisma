@@ -1,0 +1,34 @@
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+model Payment {
+  paymentID       String       @id @default(uuid()) 
+  totalValue      Float        
+  paymentType     String       
+  timestamp       DateTime     @default(now()) 
+  paymentStatusID String       
+  ticketID        String       
+
+  paymentStatus   PaymentStatus @relation(fields: [paymentStatusID], references: [paymentStatusID]) 
+
+  @@map("Payments") 
+}
+
+model PaymentStatus {
+  paymentStatusID String   @id @default(uuid()) 
+  status          String   @db.VarChar(20)     
+  payments        Payment[] 
+
+  @@map("PaymentStatuses") 
+}
+
+

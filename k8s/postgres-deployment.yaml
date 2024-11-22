@@ -1,0 +1,58 @@
+# StatefulSet para gerenciar o PostgreSQL
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: userservice-db
+  labels:
+    app: userservice-db
+spec:
+  serviceName: "userservice-db-service" # Nome do serviço usado para resolver o endereço interno do banco
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice-db
+  template:
+    metadata:
+      labels:
+        app: userservice-db
+    spec:
+      containers:
+        - name: userservice-db
+          image: postgres:alpine 
+          env:
+            - name: POSTGRES_USER
+              value: "userservice_user"      
+            - name: POSTGRES_PASSWORD
+              value: "userservice_pass"      
+            - name: POSTGRES_DB
+              value: "userservice_db"    # Nome DB
+          ports:
+            - containerPort: 5432     # Porta padrão do PostgreSQL
+          volumeMounts:
+            - name: userservice-db-data
+              mountPath: /var/lib/postgresql/data # Diretório de dados
+  volumeClaimTemplates:
+    - metadata:
+        name: userservice-db-data
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 2Gi
+
+---
+# Serviço para expor o PostgreSQL dentro e fora do cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice-db-service
+  labels:
+    app: userservice-db
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5432           # Porta do serviço
+      targetPort: 5432     # Porta no container
+  selector:
+    app: userservice-db        # Seleciona o StatefulSet pelo label
