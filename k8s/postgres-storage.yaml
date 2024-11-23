@@ -5,7 +5,7 @@ metadata:
   name: postgres-pv-volume
   labels:
     type: local
-    app: userservice-db
+    app: paymentservice-db
 spec:
   storageClassName: manual
   capacity:
@@ -13,7 +13,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/data/userservice-db" # Caminho local no nó onde os dados serão armazenados
+    path: "/mnt/data/paymentservice-db" # Caminho local no nó onde os dados serão armazenados
 
 ---
 # PersistentVolumeClaim para utilizar o PV acima
@@ -22,7 +22,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgres-pv-claim
   labels:
-    app: userservice-db
+    app: paymentservice-db
 spec:
   storageClassName: manual
   accessModes:

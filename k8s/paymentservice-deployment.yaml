@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paymentservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paymentservice
+  template:
+    metadata:
+      labels:
+        app: paymentservice
+    spec:
+      containers:
+      - name: paymentservice
+        image: a23893/paymentservice:latest
+        ports:
+        - containerPort: 5004
+        env:
+          - name: DB_HOST
+            value: "paymentservice-db-service"  
+          - name: DB_PORT
+            value: "5432"                  
+          - name: DB_USER
+            value: "paymentservice_user"      
+          - name: DB_PASSWORD
+            value: "paymentservice_pass"      
+          - name: DB_NAME
+            value: "paymentservice_db" 

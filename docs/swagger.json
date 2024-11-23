@@ -27,7 +27,7 @@
                     "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
                     "totalValue": 100.50,
                     "paymentType": "Credit Card",
-                    "paymentStatusID": "1",
+                    "paymentStatusID": "2b3c4d5e-6f7a-8901-bcde-f12345678901",
                     "ticketID": "9876543210",
                     "createdAt": "2024-11-18T12:00:00Z"
                   }
@@ -54,7 +54,7 @@
               "example": {
                 "totalValue": 100.50,
                 "paymentType": "Credit Card",
-                "paymentStatusID": "1",
+                "paymentStatusID": "2b3c4d5e-6f7a-8901-bcde-f12345678901",
                 "ticketID": "9876543210"
               }
             }

@@ -64,15 +64,16 @@ const paymentController = {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      // POR IMPLEMENTAR
-      // paymentStatusID existe
-    //   const paymentStatus = await prisma.paymentStatus.findUnique({
-    //     where: { paymentStatusID },
-    //   });
+      // Verifica se o paymentStatusID (se enviado) é válido
+      if (paymentData.paymentStatusID) {
+        const paymentStatus = await prisma.paymentStatus.findUnique({
+            where: { paymentStatusID: paymentData.paymentStatusID },
+        });
 
-    //   if (!paymentStatus) {
-    //     return res.status(404).json({ message: 'Payment Status not found' });
-    //   }
+        if (!paymentStatus) {
+            return res.status(404).json({ message: 'Payment Status not found' });
+        }
+      }
 
       // Criar Payment
       const newPayment = await paymentService.createPayment(req.body);
@@ -103,15 +104,16 @@ const paymentController = {
         return res.status(404).json({ message: 'Payment not found' });
       }
 
-        // POR IMPLEMENTAR
-      // paymentStatusID existe
-    //   const paymentStatus = await prisma.paymentStatus.findUnique({
-    //     where: { paymentStatusID },
-    //   });
+      // Verifica se o paymentStatusID (se enviado) é válido
+      if (paymentData.paymentStatusID) {
+          const paymentStatus = await prisma.paymentStatus.findUnique({
+              where: { paymentStatusID: paymentData.paymentStatusID },
+          });
 
-    //   if (!paymentStatus) {
-    //     return res.status(404).json({ message: 'Payment Status not found' });
-    //   }
+          if (!paymentStatus) {
+              return res.status(404).json({ message: 'Payment Status not found' });
+          }
+      }
 
       const updatedPayment = paymentService.updatePayment(id, paymentData);
       res.status(200).json(updatedPayment);

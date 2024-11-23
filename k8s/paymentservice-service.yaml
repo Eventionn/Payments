@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paymentservice
+  labels:
+    app: paymentservice
+spec:
+  selector:
+    app: paymentservice
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5004        #Porta Interna Serviço 
+      targetPort: 5004  #Porta Pod
