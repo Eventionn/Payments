@@ -204,6 +204,191 @@
           }
         }
       }
+    },
+    "/paymentstatus": {
+      "get": {
+        "summary": "Get all Payment Statuses",
+        "operationId": "getAllPaymentStatuses",
+        "tags": ["PaymentStatuses"],
+        "responses": {
+          "200": {
+            "description": "List of Payment Statuses",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "paymentStatusID": "1",
+                    "status": "Paid",
+                    "payments": [
+                      {
+                        "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                        "totalValue": 100.50,
+                        "paymentType": "Credit Card"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "No payment statuses found"
+          },
+          "500": {
+            "description": "Internal error while fetching payment statuses"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new Payment Status",
+        "operationId": "createPaymentStatus",
+        "tags": ["PaymentStatuses"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "status": "Processing"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment status created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "paymentStatusID": "2",
+                  "status": "Processing"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields"
+          },
+          "500": {
+            "description": "Error creating Payment Status"
+          }
+        }
+      }
+    },
+    "/paymentstatus/{id}": {
+      "get": {
+        "summary": "Get a Payment Status by ID",
+        "operationId": "getPaymentStatusById",
+        "tags": ["PaymentStatuses"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment status retrieved successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "paymentStatusID": "1",
+                  "status": "Paid",
+                  "payments": [
+                    {
+                      "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                      "totalValue": 100.50,
+                      "paymentType": "Credit Card"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment status not found"
+          },
+          "500": {
+            "description": "Error fetching Payment Status by ID"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a Payment Status",
+        "operationId": "updatePaymentStatus",
+        "tags": ["PaymentStatuses"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "example": {
+                "status": "Completed"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment status updated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "paymentStatusID": "1",
+                  "status": "Completed"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment status not found"
+          },
+          "500": {
+            "description": "Error updating Payment Status"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Payment Status",
+        "operationId": "deletePaymentStatus",
+        "tags": ["PaymentStatuses"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Payment status deleted successfully"
+          },
+          "404": {
+            "description": "Payment status not found"
+          },
+          "500": {
+            "description": "Error deleting Payment Status"
+          }
+        }
+      }
     }
   },
   "components": {

@@ -1,10 +1,15 @@
 import { Router } from "express";
 import paymentController from "../controllers/paymentController.js";
+import paymentStatusController from "../controllers/paymentStatusController.js";
 
 const router = Router();
 
 // PaymentStatus Routes
-
+router.get('/paymentstatus', paymentStatusController.getAllPaymentStatuses);
+router.get('/paymentstatus/:id', paymentStatusController.getPaymentStatusById);
+router.post('/paymentstatus', paymentStatusController.createPaymentStatus);
+router.put('/paymentstatus/:id', paymentStatusController.updatePaymentStatus);
+router.delete('/paymentstatus/:id', paymentStatusController.deletePaymentStatus);
 
 // Payment Routes
 router.get('/payments', paymentController.getAllPayments);
