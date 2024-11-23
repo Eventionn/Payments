@@ -11,11 +11,11 @@ const paymentController = {
    */
   async getAllPayments(req, res) {
     try {
-      const payments = paymentService.getAllPayments();
+      const payments = await paymentService.getAllPayments();
       console.log(payments);
 
       if (payments == null || payments.length === 0) {
-        return res.status(404).json({ message: 'No payments found' });
+        return res.status(404).json({ message: 'No payments found' }); 
       }
 
       res.status(200).json(payments);
@@ -35,7 +35,7 @@ const paymentController = {
   async getPaymentById(req, res) {
     const { id } = req.params; // gets id from param url
     try {
-      const payment = paymentService.getPaymentById(id);
+      const payment = await paymentService.getPaymentById(id);
   
       if (!payment) {
         return res.status(404).json({ message: 'Payment not found' });
@@ -75,7 +75,7 @@ const paymentController = {
     //   }
 
       // Criar Payment
-      const newPayment = paymentService.createPayment(req.body);
+      const newPayment = await paymentService.createPayment(req.body);
 
       res.status(201).json(newPayment);
     } catch (error) {
