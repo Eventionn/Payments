@@ -120,9 +120,7 @@ const paymentController = {
 
       // Verifica se o paymentStatusID (se enviado) é válido
       if (paymentData.paymentStatusID) {
-          const paymentStatus = await prisma.paymentStatus.findUnique({
-              where: { paymentStatusID: paymentData.paymentStatusID },
-          });
+          const paymentStatus = await paymentStatusService.getPaymentStatusByStatus('Canceled');
 
           if (!paymentStatus) {
               return res.status(404).json({ message: 'Payment Status not found' });
@@ -135,6 +133,46 @@ const paymentController = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Error updating Payment' });
+    }
+  },
+
+  /**
+   * Cancel a Payment
+   * @auth none
+   * @route {PUT} /payments/{id}/cancel
+   * @param {String} id - The ID of the Payment to cancel
+   * @returns {Payment} The updated Payment object with the status changed to "canceled"
+   */
+  async cancelPayment(req, res) {
+    const { id } = req.params;
+
+    try {
+      // Verifica se o pagamento existe
+      const payment = await paymentService.getPaymentById(id);
+      if (!payment) {
+        return res.status(404).json({ message: 'Payment not found' });
+      }
+
+      //procura status 
+      const canceledStatus = await prisma.paymentStatus.findFirst({
+        where: { status: 'Canceled' }, 
+      });
+
+      if (!canceledStatus) {
+        return res.status(404).json({ message: 'Payment Status "canceled" not found' });
+      }
+
+      // Atualiza o status para canceled
+      const updatedPayment = await paymentService.updatePayment(id, {
+        paymentStatusID: canceledStatus.paymentStatusID,
+      });
+
+      // success
+      res.status(200).json(updatedPayment);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error canceling Payment' });
     }
   },
 
