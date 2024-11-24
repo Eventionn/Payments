@@ -2,7 +2,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://paymentservice_user:paymentservice_pass@paymentservice-db-service:5435/paymentservice_db"
 }
 
 generator client {
