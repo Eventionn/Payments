@@ -1,5 +1,6 @@
 import { prisma } from '../prismaClient.js';
 import paymentService from '../services/paymentService.js';
+import paymentStatusService from '../services/paymentStatusService.js';
 
 const paymentController = {
 
@@ -60,20 +61,33 @@ const paymentController = {
     try {
         
       const { totalValue, paymentType, paymentStatusID, ticketID } = req.body;
-      if (!totalValue || !paymentType || !paymentStatusID || !ticketID) {
+      
+      // Verificar campos obrigatórios
+      if (!totalValue || !paymentType || !ticketID) {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      // Verifica se o paymentStatusID (se enviado) é válido
-      if (paymentData.paymentStatusID) {
-        const paymentStatus = await prisma.paymentStatus.findUnique({
-            where: { paymentStatusID: paymentData.paymentStatusID },
-        });
+      let paymentStatus;
+
+      // Se paymentStatusID for enviado, validar
+      if (paymentStatusID) {
+        paymentStatus = await paymentStatusService.getPaymentStatusById(paymentStatusID);
 
         if (!paymentStatus) {
-            return res.status(404).json({ message: 'Payment Status not found' });
+          return res.status(404).json({ message: 'Payment Status not found' });
         }
+      } else {
+        // Caso `paymentStatusID` não seja enviado, buscar o status 'Pending'
+        paymentStatus = await paymentStatusService.getPaymentStatusByStatus('Pending');
+
+        if (!paymentStatus) {
+          return res.status(404).json({ message: 'Default Payment Status "Pending" not found' });
+        }
+
+        // Atribuir o ID do status 'Pending' ao corpo da requisição
+        req.body.paymentStatusID = paymentStatus.paymentStatusID;
       }
+
 
       // Criar Payment
       const newPayment = await paymentService.createPayment(req.body);

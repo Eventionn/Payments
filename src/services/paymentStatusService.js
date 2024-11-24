@@ -23,6 +23,17 @@ const paymentStatusService = {
   },
 
   /**
+   * Get PaymentStatus by status
+   * @param {String} searchstatus - The status of the PaymentStatus
+   * @returns {Object} The payment status object
+   */
+    async getPaymentStatusByStatus(searchstatus) {
+      return prisma.paymentStatus.findFirst({
+        where: { status: searchstatus },
+      });
+    },
+
+  /**
    * Create a new PaymentStatus
    * @param {Object} data - The PaymentStatus data
    * @returns {Object} The created payment status object

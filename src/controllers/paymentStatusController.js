@@ -63,6 +63,12 @@ const paymentStatusController = {
         return res.status(400).json({ message: 'Missing required field: status' });
       }
 
+      // Verificar se já existe um paymentStatus com o mesmo `status`
+      const statusExists = await paymentStatusService.getPaymentStatusByStatus(status);
+      if (statusExists) {
+        return res.status(400).json({ message: 'Payment status already exists' });
+      }
+
       const newPaymentStatus = await paymentStatusService.createPaymentStatus(req.body);
       res.status(201).json(newPaymentStatus);
     } catch (error) {
