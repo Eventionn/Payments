@@ -205,6 +205,47 @@
         }
       }
     },
+    "/payments/{id}/cancel": {
+      "put": {
+        "summary": "Cancel a Payment by updating its status to 'canceled'",
+        "operationId": "cancelPayment",
+        "tags": ["Payments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment canceled successfully, status updated to 'canceled'",
+            "content": {
+              "application/json": {
+                "example": {
+                  "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
+                  "totalValue": 100.50,
+                  "paymentType": "Credit Card",
+                  "paymentStatusID": "canceled-status-id",  
+                  "ticketID": "9876543210",
+                  "createdAt": "2024-11-18T12:00:00Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment not found or 'canceled' status not found"
+          },
+          "500": {
+            "description": "Error canceling Payment"
+          }
+        }
+      }
+    },
     "/paymentstatus": {
       "get": {
         "summary": "Get all Payment Statuses",

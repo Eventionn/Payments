@@ -15,8 +15,8 @@ router.delete('/paymentstatus/:id', paymentStatusController.deletePaymentStatus)
 router.get('/payments', paymentController.getAllPayments);
 router.get('/payments/:id', paymentController.getPaymentById);
 router.post('/payments', paymentController.createPayment);
-router.put('/payments/:id', paymentController.updatePayment);
 router.put('/payments/:id/cancel', paymentController.cancelPayment);
+router.put('/payments/:id', paymentController.updatePayment);
 router.delete('/payments/:id', paymentController.deletePayment);
 //rota dos meus pagamentos - api/payments/my
 
