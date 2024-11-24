@@ -77,7 +77,7 @@ const paymentController = {
           return res.status(404).json({ message: 'Payment Status not found' });
         }
       } else {
-        // Caso `paymentStatusID` não seja enviado, buscar o status 'Pending'
+        // Caso `paymentStatusID` não seja enviado, procurar o status 'Pending'
         paymentStatus = await paymentStatusService.getPaymentStatusByStatus('Pending');
 
         if (!paymentStatus) {
