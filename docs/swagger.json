@@ -15,6 +15,7 @@
       "get": {
         "summary": "Get all Payment Statuses",
         "description": "Recupera todos os status de pagamento.",
+        "tags": ["PaymentStatus"],
         "responses": {
           "200": {
             "description": "Lista de status de pagamento.",
@@ -34,6 +35,7 @@
       "post": {
         "summary": "Create Payment Status",
         "description": "Cria um novo status de pagamento.",
+        "tags": ["PaymentStatus"],
         "requestBody": {
           "description": "Dados do status de pagamento.",
           "required": true,
@@ -61,6 +63,7 @@
       "get": {
         "summary": "Get Payment Status by ID",
         "description": "Busca um status de pagamento pelo ID.",
+        "tags": ["PaymentStatus"],
         "parameters": [
           {
             "name": "id",
@@ -86,6 +89,7 @@
       "put": {
         "summary": "Update Payment Status",
         "description": "Atualiza um status de pagamento pelo ID.",
+        "tags": ["PaymentStatus"],
         "parameters": [
           {
             "name": "id",
@@ -120,6 +124,7 @@
       "delete": {
         "summary": "Delete Payment Status",
         "description": "Exclui um status de pagamento pelo ID.",
+        "tags": ["PaymentStatus"],
         "parameters": [
           {
             "name": "id",
@@ -140,6 +145,7 @@
       "get": {
         "summary": "Get all Payments",
         "description": "Recupera todos os pagamentos.",
+        "tags": ["Payments"],
         "responses": {
           "200": {
             "description": "Lista de pagamentos.",
@@ -159,6 +165,7 @@
       "post": {
         "summary": "Create a Payment",
         "description": "Cria um novo pagamento.",
+        "tags": ["Payments"],
         "requestBody": {
           "description": "Dados do pagamento a ser criado.",
           "required": true,
@@ -186,6 +193,7 @@
       "get": {
         "summary": "Get User Payments",
         "description": "Recupera todos os pagamentos do usuário autenticado.",
+        "tags": ["Payments"],
         "security": [
           {
             "bearerAuth": []
@@ -212,6 +220,7 @@
       "get": {
         "summary": "Get Payment by ID",
         "description": "Busca um pagamento pelo ID.",
+        "tags": ["Payments"],
         "parameters": [
           {
             "name": "id",
@@ -237,6 +246,7 @@
       "put": {
         "summary": "Update Payment",
         "description": "Atualiza os dados de um pagamento pelo ID.",
+        "tags": ["Payments"],
         "parameters": [
           {
             "name": "id",
@@ -271,6 +281,7 @@
       "delete": {
         "summary": "Delete Payment",
         "description": "Exclui um pagamento pelo ID.",
+        "tags": ["Payments"],
         "parameters": [
           {
             "name": "id",
@@ -291,6 +302,7 @@
       "put": {
         "summary": "Cancel Payment",
         "description": "Cancela um pagamento pelo ID.",
+        "tags": ["Payments"],
         "parameters": [
           {
             "name": "id",
@@ -318,6 +330,7 @@
       "get": {
         "summary": "Get Payment by Ticket ID",
         "description": "Busca um pagamento pelo ID do ticket.",
+        "tags": ["Payments"],
         "parameters": [
           {
             "name": "ticketId",
