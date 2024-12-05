@@ -201,6 +201,58 @@ const paymentController = {
       res.status(500).json({ message: 'Error deleting Payment' });
     }
   },
+
+  /**
+   * Get User payments
+   * @route {GET} /payments/my
+   * @param {string} id - The ID of the Payment
+   * @returns {Array} List of payments
+   */
+    async getUserPayments(req, res) {
+      try {
+        console.log(req.user)
+        const userId = req.user.userID;
+  
+        console.log(userId)
+  
+        const payments = await paymentService.getUserPayments(userId);
+  
+        if (payments == null || payments.length === 0) {
+          return res.status(404).json({ message: 'No payments found' });
+        }
+  
+        res.status(200).json(payments);
+  
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching payments' });
+      }
+    },  
+
+  /**
+   * Get a Payment by ticket ID
+   * @auth none 
+   * @route {GET} /payments/ticket/{ticketId}
+   * @param {String} ticketId - The ID of the Ticket
+   * @returns {Payment} The Payment object
+   */
+  async getPaymentByTicketId(req, res) {
+    const { ticketId } = req.params; // gets id from param url
+    try {
+      const payment = await paymentService.getPaymentByTicketId(ticketId);
+  
+      if (!payment) {
+        return res.status(404).json({ message: 'Payment not found' });
+      }
+  
+      res.status(200).json(payment);
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching Payment by ID' });
+    }
+  },
+
 };
 
 export default paymentController;

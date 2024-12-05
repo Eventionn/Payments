@@ -1,4 +1,6 @@
-import { prisma } from '../prismaClient.js';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const paymentService = {
 
@@ -83,6 +85,20 @@ const paymentService = {
     });
   },
 
+    /**
+   * Get Payment for a specific Ticket
+   * @param {String} ticketId - The ticket ID
+   * @returns {Array} List of payments for the given ticket
+   */
+    async getPaymentByTicketId(ticketId) {
+      return prisma.payment.findMany({
+        where: { ticketID: ticketId },
+        include: {
+          paymentStatus: true,  
+        },
+      });
+    },
+
   /**
    * Get all Payments by Payment Status
    * @param {String} paymentStatusID - The ID of the payment status
@@ -96,6 +112,34 @@ const paymentService = {
       },
     });
   },
+
+  /**
+   * Get all user payments
+   * @param {string} userId - The ID of the user
+   * @returns {Promise<Array>} List of user payments
+   */
+  async getUserPayments(userId) {
+    return prisma.payment.findMany({
+      where: {
+        ticketID: {
+          in: (
+            await prisma.userInEvent.findMany({
+              where: {
+                user_id: userId, // get tickets
+              },
+              select: {
+                ticketID: true, // seleciona ids
+              },
+            })
+          ).map((userInEvent) => userInEvent.ticketID), // get ticket ids
+        },
+      },
+      include: {
+        paymentStatus: true, // get payment status
+      },
+    });
+  },
+
 };
 
 export default paymentService;

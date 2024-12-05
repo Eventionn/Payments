@@ -1,467 +1,399 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Payments API",
+    "title": "Payment API",
     "version": "1.0.0",
-    "description": "API for managing Payments."
+    "description": "API para gerenciar pagamentos e status de pagamentos."
   },
   "servers": [
     {
-      "url": "http://localhost:5004/api",
-      "description": "Local server"
+      "url": "/api"
     }
   ],
   "paths": {
-    "/payments": {
-      "get": {
-        "summary": "Get all Payments",
-        "operationId": "getAllPayments",
-        "tags": ["Payments"],
-        "responses": {
-          "200": {
-            "description": "List of Payments",
-            "content": {
-              "application/json": {
-                "example": [
-                  {
-                    "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                    "totalValue": 100.50,
-                    "paymentType": "Credit Card",
-                    "paymentStatusID": "2b3c4d5e-6f7a-8901-bcde-f12345678901",
-                    "ticketID": "9876543210",
-                    "createdAt": "2024-11-18T12:00:00Z"
-                  }
-                ]
-              }
-            }
-          },
-          "404": {
-            "description": "No payments found"
-          },
-          "500": {
-            "description": "Internal error while fetching payments"
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a new Payment",
-        "operationId": "createPayment",
-        "tags": ["Payments"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "totalValue": 100.50,
-                "paymentType": "Credit Card",
-                "paymentStatusID": "2b3c4d5e-6f7a-8901-bcde-f12345678901",
-                "ticketID": "9876543210"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Payment created successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                  "totalValue": 100.50,
-                  "paymentType": "Credit Card",
-                  "paymentStatusID": "1",
-                  "ticketID": "9876543210",
-                  "createdAt": "2024-11-18T12:00:00Z"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing required fields"
-          },
-          "500": {
-            "description": "Error creating Payment"
-          }
-        }
-      }
-    },
-    "/payments/{id}": {
-      "get": {
-        "summary": "Get a Payment by ID",
-        "operationId": "getPaymentById",
-        "tags": ["Payments"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment retrieved successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                  "totalValue": 100.50,
-                  "paymentType": "Credit Card",
-                  "paymentStatusID": "1",
-                  "ticketID": "9876543210",
-                  "createdAt": "2024-11-18T12:00:00Z"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment not found"
-          },
-          "500": {
-            "description": "Error fetching Payment by ID"
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a Payment",
-        "operationId": "updatePayment",
-        "tags": ["Payments"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "example": {
-                "totalValue": 120.75,
-                "paymentType": "Debit Card",
-                "paymentStatusID": "2",
-                "ticketID": "9876543210"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Payment updated successfully",
-            "content": {
-              "application/json": {
-                "example": {
-                  "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                  "totalValue": 120.75,
-                  "paymentType": "Debit Card",
-                  "paymentStatusID": "2",
-                  "ticketID": "9876543210",
-                  "createdAt": "2024-11-18T12:00:00Z"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment not found"
-          },
-          "500": {
-            "description": "Error updating Payment"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a Payment",
-        "operationId": "deletePayment",
-        "tags": ["Payments"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Payment deleted successfully"
-          },
-          "404": {
-            "description": "Payment not found"
-          },
-          "500": {
-            "description": "Error deleting Payment"
-          }
-        }
-      }
-    },
-    "/payments/{id}/cancel": {
-      "put": {
-        "summary": "Cancel a Payment by updating its status to 'canceled'",
-        "operationId": "cancelPayment",
-        "tags": ["Payments"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment canceled successfully, status updated to 'canceled'",
-            "content": {
-              "application/json": {
-                "example": {
-                  "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                  "totalValue": 100.50,
-                  "paymentType": "Credit Card",
-                  "paymentStatusID": "canceled-status-id",  
-                  "ticketID": "9876543210",
-                  "createdAt": "2024-11-18T12:00:00Z"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment not found or 'canceled' status not found"
-          },
-          "500": {
-            "description": "Error canceling Payment"
-          }
-        }
-      }
-    },
     "/paymentstatus": {
       "get": {
         "summary": "Get all Payment Statuses",
-        "operationId": "getAllPaymentStatuses",
-        "tags": ["PaymentStatuses"],
+        "description": "Recupera todos os status de pagamento.",
         "responses": {
           "200": {
-            "description": "List of Payment Statuses",
+            "description": "Lista de status de pagamento.",
             "content": {
               "application/json": {
-                "example": [
-                  {
-                    "paymentStatusID": "1",
-                    "status": "Paid",
-                    "payments": [
-                      {
-                        "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                        "totalValue": 100.50,
-                        "paymentType": "Credit Card"
-                      }
-                    ]
-                  }
-                ]
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PaymentStatus" }
+                }
               }
             }
           },
-          "404": {
-            "description": "No payment statuses found"
-          },
-          "500": {
-            "description": "Internal error while fetching payment statuses"
-          }
+          "404": { "description": "Nenhum status encontrado." },
+          "500": { "description": "Erro ao buscar status de pagamento." }
         }
       },
       "post": {
-        "summary": "Create a new Payment Status",
-        "operationId": "createPaymentStatus",
-        "tags": ["PaymentStatuses"],
+        "summary": "Create Payment Status",
+        "description": "Cria um novo status de pagamento.",
         "requestBody": {
+          "description": "Dados do status de pagamento.",
           "required": true,
           "content": {
             "application/json": {
-              "example": {
-                "status": "Processing"
-              }
+              "schema": { "$ref": "#/components/schemas/PaymentStatusCreate" }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Payment status created successfully",
+            "description": "Status de pagamento criado.",
             "content": {
               "application/json": {
-                "example": {
-                  "paymentStatusID": "2",
-                  "status": "Processing"
-                }
+                "schema": { "$ref": "#/components/schemas/PaymentStatus" }
               }
             }
           },
-          "400": {
-            "description": "Missing required fields"
-          },
-          "500": {
-            "description": "Error creating Payment Status"
-          }
+          "400": { "description": "Status já existe ou campo obrigatório ausente." },
+          "500": { "description": "Erro ao criar status de pagamento." }
         }
       }
     },
     "/paymentstatus/{id}": {
       "get": {
-        "summary": "Get a Payment Status by ID",
-        "operationId": "getPaymentStatusById",
-        "tags": ["PaymentStatuses"],
+        "summary": "Get Payment Status by ID",
+        "description": "Busca um status de pagamento pelo ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1"
-            }
+            "description": "ID do status de pagamento.",
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
-            "description": "Payment status retrieved successfully",
+            "description": "Dados do status de pagamento.",
             "content": {
               "application/json": {
-                "example": {
-                  "paymentStatusID": "1",
-                  "status": "Paid",
-                  "payments": [
-                    {
-                      "paymentID": "1a2b3c4d-5678-90ab-cdef-1234567890ab",
-                      "totalValue": 100.50,
-                      "paymentType": "Credit Card"
-                    }
-                  ]
-                }
+                "schema": { "$ref": "#/components/schemas/PaymentStatus" }
               }
             }
           },
-          "404": {
-            "description": "Payment status not found"
-          },
-          "500": {
-            "description": "Error fetching Payment Status by ID"
-          }
+          "404": { "description": "Status de pagamento não encontrado." },
+          "500": { "description": "Erro ao buscar status de pagamento." }
         }
       },
       "put": {
-        "summary": "Update a Payment Status",
-        "operationId": "updatePaymentStatus",
-        "tags": ["PaymentStatuses"],
+        "summary": "Update Payment Status",
+        "description": "Atualiza um status de pagamento pelo ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1"
-            }
+            "description": "ID do status de pagamento.",
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
+          "description": "Dados do status de pagamento a serem atualizados.",
           "required": true,
           "content": {
             "application/json": {
-              "example": {
-                "status": "Completed"
-              }
+              "schema": { "$ref": "#/components/schemas/PaymentStatusUpdate" }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Payment status updated successfully",
+            "description": "Status de pagamento atualizado.",
             "content": {
               "application/json": {
-                "example": {
-                  "paymentStatusID": "1",
-                  "status": "Completed"
-                }
+                "schema": { "$ref": "#/components/schemas/PaymentStatus" }
               }
             }
           },
-          "404": {
-            "description": "Payment status not found"
-          },
-          "500": {
-            "description": "Error updating Payment Status"
-          }
+          "404": { "description": "Status de pagamento não encontrado." },
+          "500": { "description": "Erro ao atualizar status de pagamento." }
         }
       },
       "delete": {
-        "summary": "Delete a Payment Status",
-        "operationId": "deletePaymentStatus",
-        "tags": ["PaymentStatuses"],
+        "summary": "Delete Payment Status",
+        "description": "Exclui um status de pagamento pelo ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string",
-              "example": "1"
-            }
+            "description": "ID do status de pagamento.",
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Payment status deleted successfully"
+          "204": { "description": "Status de pagamento excluído." },
+          "404": { "description": "Status de pagamento não encontrado." },
+          "500": { "description": "Erro ao excluir status de pagamento." }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "summary": "Get all Payments",
+        "description": "Recupera todos os pagamentos.",
+        "responses": {
+          "200": {
+            "description": "Lista de pagamentos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Payment" }
+                }
+              }
+            }
           },
-          "404": {
-            "description": "Payment status not found"
-          },
-          "500": {
-            "description": "Error deleting Payment Status"
+          "404": { "description": "Nenhum pagamento encontrado." },
+          "500": { "description": "Erro ao buscar pagamentos." }
+        }
+      },
+      "post": {
+        "summary": "Create a Payment",
+        "description": "Cria um novo pagamento.",
+        "requestBody": {
+          "description": "Dados do pagamento a ser criado.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentCreate" }
+            }
           }
+        },
+        "responses": {
+          "201": {
+            "description": "Pagamento criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Payment" }
+              }
+            }
+          },
+          "400": { "description": "Campos obrigatórios ausentes." },
+          "500": { "description": "Erro ao criar o pagamento." }
+        }
+      }
+    },
+    "/payments/my": {
+      "get": {
+        "summary": "Get User Payments",
+        "description": "Recupera todos os pagamentos do usuário autenticado.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pagamentos do usuário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Payment" }
+                }
+              }
+            }
+          },
+          "401": { "description": "Usuário não autenticado." },
+          "500": { "description": "Erro ao buscar pagamentos do usuário." }
+        }
+      }
+    },
+    "/payments/{id}": {
+      "get": {
+        "summary": "Get Payment by ID",
+        "description": "Busca um pagamento pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do pagamento.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do pagamento.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Payment" }
+              }
+            }
+          },
+          "404": { "description": "Pagamento não encontrado." },
+          "500": { "description": "Erro ao buscar o pagamento." }
+        }
+      },
+      "put": {
+        "summary": "Update Payment",
+        "description": "Atualiza os dados de um pagamento pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do pagamento.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Dados do pagamento a serem atualizados.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentUpdate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pagamento atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Payment" }
+              }
+            }
+          },
+          "404": { "description": "Pagamento não encontrado." },
+          "500": { "description": "Erro ao atualizar o pagamento." }
+        }
+      },
+      "delete": {
+        "summary": "Delete Payment",
+        "description": "Exclui um pagamento pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do pagamento.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Pagamento excluído com sucesso." },
+          "404": { "description": "Pagamento não encontrado." },
+          "500": { "description": "Erro ao excluir o pagamento." }
+        }
+      }
+    },
+    "/payments/{id}/cancel": {
+      "put": {
+        "summary": "Cancel Payment",
+        "description": "Cancela um pagamento pelo ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID do pagamento.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pagamento cancelado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Payment" }
+              }
+            }
+          },
+          "404": { "description": "Pagamento não encontrado." },
+          "500": { "description": "Erro ao cancelar o pagamento." }
+        }
+      }
+    },
+    "/payments/ticket/{ticketId}": {
+      "get": {
+        "summary": "Get Payment by Ticket ID",
+        "description": "Busca um pagamento pelo ID do ticket.",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "required": true,
+            "description": "ID do ticket.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados do pagamento associado ao ticket.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Payment" }
+              }
+            }
+          },
+          "404": { "description": "Pagamento não encontrado." },
+          "500": { "description": "Erro ao buscar pagamento pelo ticket." }
         }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Bearer token authentication"
+      }
+    },
     "schemas": {
       "Payment": {
         "type": "object",
         "properties": {
-          "paymentID": {
-            "type": "string",
-            "example": "1a2b3c4d-5678-90ab-cdef-1234567890ab"
-          },
-          "totalValue": {
-            "type": "number",
-            "example": 100.50
-          },
-          "paymentType": {
-            "type": "string",
-            "example": "Credit Card"
-          },
-          "paymentStatusID": {
-            "type": "string",
-            "example": "1"
-          },
-          "ticketID": {
-            "type": "string",
-            "example": "9876543210"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2024-11-18T12:00:00Z"
-          }
+          "paymentID": { "type": "string" },
+          "amount": { "type": "number", "format": "double" },
+          "statusID": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PaymentCreate": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number", "format": "double" },
+          "statusID": { "type": "string" }
+        },
+        "required": ["amount", "statusID"]
+      },
+      "PaymentUpdate": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number", "format": "double" },
+          "statusID": { "type": "string" }
+        }
+      },
+      "PaymentStatus": {
+        "type": "object",
+        "properties": {
+          "statusID": { "type": "string" },
+          "statusName": { "type": "string" }
+        }
+      },
+      "PaymentStatusCreate": {
+        "type": "object",
+        "properties": {
+          "statusName": { "type": "string" }
+        },
+        "required": ["statusName"]
+      },
+      "PaymentStatusUpdate": {
+        "type": "object",
+        "properties": {
+          "statusName": { "type": "string" }
         }
       }
     }
