@@ -1,6 +1,7 @@
 import { prisma } from '../prismaClient.js';
 import paymentService from '../services/paymentService.js';
 import paymentStatusService from '../services/paymentStatusService.js';
+import axios from 'axios';
 
 const paymentController = {
 
@@ -208,26 +209,49 @@ const paymentController = {
    * @param {string} id - The ID of the Payment
    * @returns {Array} List of payments
    */
-    async getUserPayments(req, res) {
-      try {
-        console.log(req.user)
-        const userId = req.user.userID;
+  async getUserPayments(req, res) {
+    try {
+      console.log(req.user);
+      const userId = req.user.userID;
   
-        console.log(userId)
+      console.log(userId);
   
-        const payments = await paymentService.getUserPayments(userId);
+      // Configura o cabeçalho com o token
+      const token = req.headers.authorization; // Obtém o token do cabeçalho da requisição
+      const axiosConfig = {
+        headers: {
+          Authorization: token, // Inclui o token no cabeçalho
+        },
+      };
   
-        if (payments == null || payments.length === 0) {
-          return res.status(404).json({ message: 'No payments found' });
-        }
+      // Busca os tickets com o token no cabeçalho
+      //const paymentResponse = await axios.post(`http://paymentservice:5003/api/tickets/my/`, { 
+      const ticketResponse = await axios.get(`http://localhost:5003/api/tickets/my/`, axiosConfig);
+      const tickets = ticketResponse.data;
   
-        res.status(200).json(payments);
-  
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error fetching payments' });
+      if (!tickets || tickets.length === 0) {
+        return res.status(404).json({ message: 'No tickets found' });
       }
-    },  
+  
+      // array de pagamentos
+      const payments = [];
+  
+      // procura pagamento de cada ticket
+      for (const element of tickets) {
+        const pay = await paymentService.getPayment(element.ticketID);
+        if (pay) {
+          payments.push(pay);
+        }
+      }
+  
+      // Resposta com os pagamentos encontrados
+      res.status(200).json(payments);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching payments' });
+    }
+  },
+
 
   /**
    * Get a Payment by ticket ID

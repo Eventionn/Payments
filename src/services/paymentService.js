@@ -140,6 +140,19 @@ const paymentService = {
     });
   },
 
+  /**
+   * Get user payments
+   * @param {string} userId - The ID of the user
+   * @returns {Promise<Array>} List of user payments
+   */
+  async getPayment(ticketId) {
+    return prisma.payment.findFirst({
+      where: {
+        ticketID: ticketId
+      }
+    });
+  },
+
 };
 
 export default paymentService;
