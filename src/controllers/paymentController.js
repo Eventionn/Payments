@@ -68,6 +68,20 @@ const paymentController = {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
+      const ticketExistsResponse = await axios.get(`http://userineventservice:5003/api/tickets/${ticketID}`);
+      //const ticketExistsResponse = await axios.get(`http://localhost:5003/api/tickets/${ticketID}`);
+      if (!ticketExistsResponse || !ticketExistsResponse.data) {
+        return res.status(404).json({ message: 'Ticket not found' });
+      }
+
+      const useridticket = ticketExistsResponse.user_id;
+
+      const userExistsResponse = await axios.get(`http://userservice:5001/api/users/${useridticket}`);
+      //const ticketExistsResponse = await axios.get(`http://localhost:5003/api/users/${ticketID}`);
+      if (!userExistsResponse || !userExistsResponse.data) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
       let paymentStatus;
 
       // Se paymentStatusID for enviado, validar
