@@ -2,7 +2,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://admin:admin123@localhost:5432/Payments"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
