@@ -224,9 +224,9 @@ const paymentController = {
         },
       };
   
-      // Busca os tickets com o token no cabeçalho
-      //const paymentResponse = await axios.post(`http://paymentservice:5003/api/tickets/my/`, { 
-      const ticketResponse = await axios.get(`http://localhost:5003/api/tickets/my/`, axiosConfig);
+      // get tickets com o token no cabeçalho
+      const ticketResponse = await axios.get(`http://paymentservice:5003/api/tickets/my/`, axiosConfig);
+      //const ticketResponse = await axios.get(`http://localhost:5003/api/tickets/my/`, axiosConfig);
       const tickets = ticketResponse.data;
   
       if (!tickets || tickets.length === 0) {
