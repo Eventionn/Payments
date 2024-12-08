@@ -16,6 +16,11 @@
         "summary": "Get all Payment Statuses",
         "description": "Recupera todos os status de pagamento.",
         "tags": ["PaymentStatus"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de status de pagamento.",
@@ -221,6 +226,11 @@
         "summary": "Get Payment by ID",
         "description": "Busca um pagamento pelo ID.",
         "tags": ["Payments"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "id",

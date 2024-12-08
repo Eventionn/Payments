@@ -73,18 +73,20 @@ const paymentController = {
       if (!ticketExistsResponse || !ticketExistsResponse.data) {
         return res.status(404).json({ message: 'Ticket not found' });
       }
+      
+      console.log(ticketExistsResponse.data);
 
-      const useridticket = ticketExistsResponse.user_id;
+      const useridticket = ticketExistsResponse.data.user_id;
 
       const userExistsResponse = await axios.get(`http://userservice:5001/api/users/${useridticket}`);
-      //const ticketExistsResponse = await axios.get(`http://localhost:5003/api/users/${ticketID}`);
+      //const ticketExistsResponse = await axios.get(`http://localhost:5001/api/users/${ticketID}`);
       if (!userExistsResponse || !userExistsResponse.data) {
         return res.status(404).json({ message: 'User not found' });
       }
 
       let paymentStatus;
 
-      // Se paymentStatusID for enviado, validar
+      // paymentStatusID enviado, validar
       if (paymentStatusID) {
         paymentStatus = await paymentStatusService.getPaymentStatusById(paymentStatusID);
 
@@ -92,14 +94,14 @@ const paymentController = {
           return res.status(404).json({ message: 'Payment Status not found' });
         }
       } else {
-        // Caso `paymentStatusID` não seja enviado, procurar o status 'Pending'
+        // paymentStatusID não enviado procura o status 'Pending'
         paymentStatus = await paymentStatusService.getPaymentStatusByStatus('Pending');
 
         if (!paymentStatus) {
           return res.status(404).json({ message: 'Default Payment Status "Pending" not found' });
         }
 
-        // Atribuir o ID do status 'Pending' ao corpo da requisição
+        // ID do status 'Pending' no body da requisição
         req.body.paymentStatusID = paymentStatus.paymentStatusID;
       }
 
@@ -133,7 +135,7 @@ const paymentController = {
         return res.status(404).json({ message: 'Payment not found' });
       }
 
-      // Verifica se o paymentStatusID (se enviado) é válido
+      // verifica se o paymentStatusID é válido
       if (paymentData.paymentStatusID) {
           const paymentStatus = await paymentStatusService.getPaymentStatusByStatus('Canceled');
 
@@ -231,15 +233,15 @@ const paymentController = {
       console.log(userId);
   
       // Configura o cabeçalho com o token
-      const token = req.headers.authorization; // Obtém o token do cabeçalho da requisição
+      const token = req.headers.authorization; // token do cabeçalho do req
       const axiosConfig = {
         headers: {
-          Authorization: token, // Inclui o token no cabeçalho
+          Authorization: token, // token
         },
       };
   
       // get tickets com o token no cabeçalho
-      const ticketResponse = await axios.get(`http://paymentservice:5003/api/tickets/my/`, axiosConfig);
+      const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig);
       //const ticketResponse = await axios.get(`http://localhost:5003/api/tickets/my/`, axiosConfig);
       const tickets = ticketResponse.data;
   
