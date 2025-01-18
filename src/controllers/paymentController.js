@@ -68,8 +68,8 @@ const paymentController = {
         return res.status(400).json({ message: 'Missing required fields' });
       }
 
-      const ticketExistsResponse = await axios.get(`http://userineventservice:5003/api/tickets/${ticketID}`);
-      //const ticketExistsResponse = await axios.get(`http://localhost:5003/api/tickets/${ticketID}`);
+      // const ticketExistsResponse = await axios.get(`http://userineventservice:5003/api/tickets/${ticketID}`);
+      const ticketExistsResponse = await axios.get(`http://localhost:5010/userinevent/api/tickets/${ticketID}`);
       if (!ticketExistsResponse || !ticketExistsResponse.data) {
         return res.status(404).json({ message: 'Ticket not found' });
       }
@@ -78,8 +78,8 @@ const paymentController = {
 
       const useridticket = ticketExistsResponse.data.user_id;
 
-      const userExistsResponse = await axios.get(`http://userservice:5001/api/users/${useridticket}`);
-      //const ticketExistsResponse = await axios.get(`http://localhost:5001/api/users/${ticketID}`);
+      // const userExistsResponse = await axios.get(`http://userservice:5001/api/users/${useridticket}`);
+      const userExistsResponse = await axios.get(`http://localhost:5010/user/api/users/${useridticket}`);
       if (!userExistsResponse || !userExistsResponse.data) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -241,8 +241,8 @@ const paymentController = {
       };
   
       // get tickets com o token no cabeçalho
-      const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig);
-      //const ticketResponse = await axios.get(`http://localhost:5003/api/tickets/my/`, axiosConfig);
+      // const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig);
+      const ticketResponse = await axios.get(`http://localhost:5010/userinevent/api/tickets/my/`, axiosConfig);
       const tickets = ticketResponse.data;
   
       if (!tickets || tickets.length === 0) {
