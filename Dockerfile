@@ -1,5 +1,9 @@
 FROM node:23-alpine
 
+RUN apk add --no-cache \
+    openssl \
+    libc6-compat
+    
 # Create app directory
 WORKDIR /usr/src/app
 
