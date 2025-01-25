@@ -248,6 +248,9 @@ const paymentController = {
           Authorization: token, // token
         },
       };
+
+      // Configuração para ignorar certificados autoassinados (apenas para desenvolvimento)
+      const agent = new https.Agent({ rejectUnauthorized: false });    
   
       // get tickets com o token no cabeçalho
       // const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig);
