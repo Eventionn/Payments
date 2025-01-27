@@ -2,6 +2,7 @@ import { prisma } from '../prismaClient.js';
 import paymentService from '../services/paymentService.js';
 import paymentStatusService from '../services/paymentStatusService.js';
 import axios from 'axios';
+import https from 'https';
 
 const paymentController = {
 
