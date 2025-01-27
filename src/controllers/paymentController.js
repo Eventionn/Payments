@@ -74,7 +74,7 @@ const paymentController = {
       // const ticketExistsResponse = await axios.get(`http://userineventservice:5003/api/tickets/${ticketID}`);
       //const ticketExistsResponse = await axios.get(`http://nginx-api-gateway:5010/userinevent/api/tickets/${ticketID}`); //api gateway
       //const ticketExistsResponse = await axios.get(`https://userineventservice:5003/api/tickets/${ticketID}`, { httpsAgent: agent }); //https teste
-      const ticketExistsResponse = await axios.get(`http://nginx-api-gateway:5010/userinevent/api/tickets/${ticketID}`, { httpsAgent: agent });  //https api gateway
+      const ticketExistsResponse = await axios.get(`https://nginx-api-gateway:5010/userinevent/api/tickets/${ticketID}`, { httpsAgent: agent });  //https api gateway
 
       if (!ticketExistsResponse || !ticketExistsResponse.data) {
         return res.status(404).json({ message: 'Ticket not found' });
@@ -87,7 +87,7 @@ const paymentController = {
       // const userExistsResponse = await axios.get(`http://userservice:5001/api/users/${useridticket}`);
       //const userExistsResponse = await axios.get(`http://nginx-api-gateway:5010/user/api/users/${useridticket}`); //api gateway
       //const userExistsResponse = await axios.get(`https://userservice:5001/api/users/${useridticket}`, { httpsAgent: agent }); //https teste
-      const userExistsResponse = await axios.get(`http://nginx-api-gateway:5010/user/api/users/${useridticket}`, { httpsAgent: agent });  //https api gateway
+      const userExistsResponse = await axios.get(`https://nginx-api-gateway:5010/user/api/users/${useridticket}`, { httpsAgent: agent });  //https api gateway
 
       if (!userExistsResponse || !userExistsResponse.data) {
         return res.status(404).json({ message: 'User not found' });
@@ -256,7 +256,7 @@ const paymentController = {
       // const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig);
       //const ticketResponse = await axios.get(`http://nginx-api-gateway:5010/userinevent/api/tickets/my/`, axiosConfig);
       //const ticketResponse = await axios.get(`http://userineventservice:5003/api/tickets/my/`, axiosConfig, { httpsAgent: agent }); //https teste
-      const ticketResponse = await axios.get(`http://nginx-api-gateway:5010/userinevent/api/tickets/my/`, axiosConfig, { httpsAgent: agent });  //https api gateway
+      const ticketResponse = await axios.get(`https://nginx-api-gateway:5010/userinevent/api/tickets/my/`, axiosConfig, { httpsAgent: agent });  //https api gateway
       
       const tickets = ticketResponse.data;
   
